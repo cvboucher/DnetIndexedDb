@@ -15,6 +15,6 @@ namespace DnetIndexedDb.Models
 
         public string DbModelGuid { get; set; }
 
-        public bool UseKeyGenerator { get; set; } = false;
+        //public bool UseKeyGenerator { get; set; } = false;
     }
 }

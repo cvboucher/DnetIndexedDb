@@ -279,7 +279,7 @@ window.dnetindexeddbinterop = (function () {
 
                         const keyPath = store.key.keyPath;
 
-                        if (keyPath !== "" && dbModel.useKeyGenerator) delete item[keyPath];
+                        if (keyPath !== "" && store.key.autoIncrement) delete item[keyPath];
 
                         const addRequest = objectStore.add(item);
 

@@ -1,4 +1,4 @@
-master - .Net5 version
+master - .Net6 version - Fixed AutoIncrement.
 
 master_net31 - 3.x version
 

@@ -41,27 +41,27 @@ namespace DnetIndexedDb.Fluent
             return model;
         }
 
-        /// <summary>
-        /// Sets Database UseKeyGenerator Property to true
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static IndexedDbDatabaseModel UseKeyGenerator(this IndexedDbDatabaseModel model)
-        {
-            model.UseKeyGenerator = true;
-            return model;
-        }
+        ///// <summary>
+        ///// Sets Database UseKeyGenerator Property to true
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <returns></returns>
+        //public static IndexedDbDatabaseModel UseKeyGenerator(this IndexedDbDatabaseModel model)
+        //{
+        //    model.UseKeyGenerator = true;
+        //    return model;
+        //}
 
-        /// <summary>
-        /// Sets Database UseKeyGenerator Property to given value
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static IndexedDbDatabaseModel UseKeyGenerator(this IndexedDbDatabaseModel model, bool value)
-        {
-            model.UseKeyGenerator = value;
-            return model;
-        }
+        ///// <summary>
+        ///// Sets Database UseKeyGenerator Property to given value
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <returns></returns>
+        //public static IndexedDbDatabaseModel UseKeyGenerator(this IndexedDbDatabaseModel model, bool value)
+        //{
+        //    model.UseKeyGenerator = value;
+        //    return model;
+        //}
 
         /// <summary>
         /// Creates a new IndexedDbStore and adds it to the Database Model
