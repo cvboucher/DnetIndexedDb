@@ -55,6 +55,22 @@ namespace DnetIndexedDb
             return dbModelId;
         }
 
+        private bool dbOpened = false;
+        /// <summary>
+        /// Check to see if the database has been opened and open if it hasn't.
+        /// </summary>
+        /// <returns></returns>
+        public async ValueTask EnsureOpen()
+        {
+            if (!dbOpened)
+            {
+                var dbModelId = await OpenIndexedDb();
+                if (dbModelId != -1)
+                    dbOpened = true;
+            }
+
+        }
+
         /// <summary>
         /// Delete IndexedDb Database
         /// </summary>
@@ -73,6 +89,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> AddItems<TEntity>(string objectStoreName, List<TEntity> items)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.addItems", _indexedDbDatabaseModel, objectStoreName, items);
         }
 
@@ -84,7 +101,9 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> AddItems<TEntity>(List<TEntity> items)
         {
-            return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.addItems", _indexedDbDatabaseModel, typeof(TEntity).Name, items);
+            await EnsureOpen();
+            return await AddItems(typeof(TEntity).Name, items);
+            //return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.addItems", _indexedDbDatabaseModel, typeof(TEntity).Name, items);
         }
 
         /// <summary>
@@ -96,6 +115,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> UpdateItems<TEntity>(string objectStoreName, List<TEntity> items)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.updateItems", _indexedDbDatabaseModel, objectStoreName, items);
         }
 
@@ -107,7 +127,9 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> UpdateItems<TEntity>(List<TEntity> items)
         {
-            return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.updateItems", _indexedDbDatabaseModel, typeof(TEntity).Name, items);
+            await EnsureOpen();
+            return await UpdateItems(typeof(TEntity).Name, items);
+            //return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.updateItems", _indexedDbDatabaseModel, typeof(TEntity).Name, items);
         }
 
         /// <summary>
@@ -132,6 +154,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> UpdateItemsByKey<TEntity>(List<TEntity> items, List<int> keys)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.updateItemsByKey", _indexedDbDatabaseModel, typeof(TEntity).Name, items, keys);
         }
 
@@ -145,6 +168,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TEntity> GetByKey<TKey, TEntity>(string objectStoreName, TKey key)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<TEntity>("dnetindexeddbinterop.getByKey", _indexedDbDatabaseModel, objectStoreName, key);
         }
 
@@ -157,6 +181,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TEntity> GetByKey<TKey, TEntity>(TKey key)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<TEntity>("dnetindexeddbinterop.getByKey", _indexedDbDatabaseModel, typeof(TEntity).Name, key);
         }
 
@@ -169,6 +194,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> DeleteByKey<TKey>(string objectStoreName, TKey key)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.deleteByKey", _indexedDbDatabaseModel, objectStoreName, key);
         }
 
@@ -181,6 +207,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> DeleteByKey<TKey, TEntity>(TKey key)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.deleteByKey", _indexedDbDatabaseModel, typeof(TEntity).Name, key);
         }
 
@@ -191,6 +218,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> DeleteAll(string objectStoreName)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.deleteAll", _indexedDbDatabaseModel, objectStoreName);
         }
 
@@ -201,6 +229,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<string> DeleteAll<TEntity>()
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<string>("dnetindexeddbinterop.deleteAll", _indexedDbDatabaseModel, typeof(TEntity).Name);
         }
 
@@ -212,6 +241,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetAll<TEntity>(string objectStoreName)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getAll", _indexedDbDatabaseModel, objectStoreName);
         }
 
@@ -222,6 +252,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetAll<TEntity>()
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getAll", _indexedDbDatabaseModel, typeof(TEntity).Name);
         }
 
@@ -236,6 +267,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetRange<TKey, TEntity>(string objectStoreName, TKey lowerBound, TKey upperBound)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getRange", _indexedDbDatabaseModel, objectStoreName, lowerBound, upperBound);
         }
 
@@ -249,6 +281,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetRange<TKey, TEntity>(TKey lowerBound, TKey upperBound)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getRange", _indexedDbDatabaseModel, typeof(TEntity).Name, lowerBound, upperBound);
         }
 
@@ -265,6 +298,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetByIndex<TKey, TEntity>(string objectStoreName, TKey lowerBound, TKey upperBound, string dbIndex, bool isRange)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getByIndex", _indexedDbDatabaseModel, objectStoreName, lowerBound, upperBound, dbIndex, isRange);
         }
 
@@ -280,6 +314,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<List<TEntity>> GetByIndex<TKey, TEntity>(TKey lowerBound, TKey upperBound, string dbIndex, bool isRange)
         {
+            await EnsureOpen();
             return await _jsRuntime.InvokeAsync<List<TEntity>>("dnetindexeddbinterop.getByIndex", _indexedDbDatabaseModel, typeof(TEntity).Name, lowerBound, upperBound, dbIndex, isRange);
         }
 
@@ -292,6 +327,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TIndex> GetMaxIndex<TIndex>(string objectStoreName, string dbIndex)
         {
+            await EnsureOpen();
             return await GetExtent<TIndex>(objectStoreName, dbIndex, MaxExtent);
         }
 
@@ -304,6 +340,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TIndex> GetMaxIndex<TIndex, TEntity>(string dbIndex)
         {
+            await EnsureOpen();
             return await GetExtent<TIndex>(typeof(TEntity).Name, dbIndex, MaxExtent);
         }
 
@@ -315,6 +352,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TKey> GetMaxKey<TKey>(string objectStoreName)
         {
+            await EnsureOpen();
             return await GetExtent<TKey>(objectStoreName, null, MaxExtent);
         }
 
@@ -326,6 +364,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TKey> GetMaxKey<TKey, TEntity>()
         {
+            await EnsureOpen();
             return await GetExtent<TKey>(typeof(TEntity).Name, null, MaxExtent);
         }
 
@@ -338,6 +377,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TIndex> GetMinIndex<TIndex>(string objectStoreName, string dbIndex)
         {
+            await EnsureOpen();
             return await GetExtent<TIndex>(objectStoreName, dbIndex, MinExtent);
         }
 
@@ -350,6 +390,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TIndex> GetMinIndex<TIndex, TEntity>(string dbIndex)
         {
+            await EnsureOpen();
             return await GetExtent<TIndex>(typeof(TEntity).Name, dbIndex, MinExtent);
         }
 
@@ -361,6 +402,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TKey> GetMinKey<TKey>(string objectStoreName)
         {
+            await EnsureOpen();
             return await GetExtent<TKey>(objectStoreName, null, MinExtent);
         }
 
@@ -372,6 +414,7 @@ namespace DnetIndexedDb
         /// <returns></returns>
         public async ValueTask<TKey> GetMinKey<TKey, TEntity>()
         {
+            await EnsureOpen();
             return await GetExtent<TKey>(typeof(TEntity).Name, null, MinExtent);
         }
 
