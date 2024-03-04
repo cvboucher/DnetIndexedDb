@@ -198,10 +198,13 @@ window.dnetindexeddbinterop = (function () {
 
         const objectStore = currentDbVersion.createObjectStore(store.name, key);
 
-        for (let index of store.indexes) {
+        if (store.indexes != null) {
+            for (let index of store.indexes) {
 
-            objectStore.createIndex(index.name, index.name, index.definition);
+                objectStore.createIndex(index.name, index.name, index.definition);
+            }
         }
+        
     }
 
     function deleteDb(dbModel) {
