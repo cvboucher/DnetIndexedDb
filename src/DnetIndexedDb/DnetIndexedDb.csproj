@@ -16,6 +16,7 @@
     <PackageReleaseNotes>
       Feature: Added Fluent by Kylar
     </PackageReleaseNotes>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
