@@ -27,112 +27,112 @@ namespace DnetIndexedDb
             this.db = db;
         }
 
-        public async ValueTask<string> Add(List<TEntity> items)
+        public virtual async ValueTask<string> Add(List<TEntity> items)
         {
             var result = await db.AddItems<TEntity>(entityType.Value.Name, items);
             return result;
         }
 
-        public async ValueTask<string> Replace(List<TEntity> items)
+        public virtual async ValueTask<string> Replace(List<TEntity> items)
         {
             await DeleteAll();
             var result = await db.AddItems<TEntity>(entityType.Value.Name, items);
             return result;
         }
 
-        public async ValueTask<string> Add(TEntity item)
+        public virtual async ValueTask<string> Add(TEntity item)
         {
             var items = new List<TEntity>() { item };
             var result = await Add(items);
             return result;
         }
 
-        public async ValueTask<TEntity> GetByKey(TKey key)
+        public virtual async ValueTask<TEntity> GetByKey(TKey key)
         {
             var result = await db.GetByKey<TKey, TEntity>(entityType.Value.Name, key);
             return result;
         }
 
-        public async ValueTask<string> DeleteByKey(TKey key)
+        public virtual async ValueTask<string> DeleteByKey(TKey key)
         {
             var result = await db.DeleteByKey<TKey>(entityType.Value.Name, key);
             return result;
         }
 
-        public async ValueTask<List<TEntity>> GetAll()
+        public virtual async ValueTask<List<TEntity>> GetAll()
         {
             var result = await db.GetAll<TEntity>(entityType.Value.Name);
             return result;
         }
 
-        public async ValueTask<List<TEntity>> GetRangeByKey(TKey lowerBound, TKey upperBound)
+        public virtual async ValueTask<List<TEntity>> GetRangeByKey(TKey lowerBound, TKey upperBound)
         {
             var result = await db.GetRange<TKey, TEntity>(entityType.Value.Name, lowerBound, upperBound);
             return result;
         }
 
-        public async ValueTask<List<TEntity>> GetByIndex<TIndex>(TIndex value, string indexName)
+        public virtual async ValueTask<List<TEntity>> GetByIndex<TIndex>(TIndex value, string indexName)
         {
             var result = await db.GetByIndex<TIndex, TEntity>(entityType.Value.Name, value, value, indexName.ToCamelCase(), false);
             return result;
         }
 
-        public async ValueTask<List<TEntity>> GetRangeByIndex<TIndex>(TIndex lowerBound, TIndex upperBound, string indexName, bool isRange)
+        public virtual async ValueTask<List<TEntity>> GetRangeByIndex<TIndex>(TIndex lowerBound, TIndex upperBound, string indexName, bool isRange)
         {
             var result = await db.GetByIndex<TIndex, TEntity>(entityType.Value.Name, lowerBound, upperBound, indexName.ToCamelCase(), isRange);
             return result;
         }
 
-        public async ValueTask<TEntity?> GetFirstOrDefaultByIndex<TIndex>(TIndex value, string indexName)
+        public virtual async ValueTask<TEntity?> GetFirstOrDefaultByIndex<TIndex>(TIndex value, string indexName)
         {
             var result = await db.GetByIndex<TIndex, TEntity>(entityType.Value.Name, value, value, indexName.ToCamelCase(), false);
             return result?.FirstOrDefault();
         }
 
-        public async ValueTask<TEntity?> GetFirstOrDefaultByKey()
+        public virtual async ValueTask<TEntity?> GetFirstOrDefaultByKey()
         {
             var minKey = await GetMinKey();
             return minKey == null ? null : await GetByKey(minKey);
         }
 
-        public async ValueTask<TKey> GetMaxKey()
+        public virtual async ValueTask<TKey> GetMaxKey()
         {
             var result = await db.GetMaxKey<TKey>(entityType.Value.Name);
             return result;
         }
 
-        public async ValueTask<TKey> GetMinKey()
+        public virtual async ValueTask<TKey> GetMinKey()
         {
             var result = await db.GetMinKey<TKey>(entityType.Value.Name);
             return result;
         }
 
-        public async ValueTask<TIndex> GetMaxIndex<TIndex>(string indexName)
+        public virtual async ValueTask<TIndex> GetMaxIndex<TIndex>(string indexName)
         {
             var result = await db.GetMaxIndex<TIndex>(entityType.Value.Name, indexName.ToCamelCase());
             return result;
         }
 
-        public async ValueTask<TIndex> GetMinIndex<TIndex>(string indexName)
+        public virtual async ValueTask<TIndex> GetMinIndex<TIndex>(string indexName)
         {
             var result = await db.GetMinIndex<TIndex>(entityType.Value.Name, indexName.ToCamelCase());
             return result;
         }
 
-        public async ValueTask<string> Update(List<TEntity> items)
+        public virtual async ValueTask<string> Update(List<TEntity> items)
         {
             var result = await db.UpdateItems<TEntity>(entityType.Value.Name, items);
             return result;
         }
 
-        public async Task<string> Update(TEntity item)
+        public virtual async Task<string> Update(TEntity item)
         {
             var items = new List<TEntity>() { item };
             var result = await Update(items);
             return result;
         }
 
-        public async ValueTask<string> DeleteAll()
+        public virtual async ValueTask<string> DeleteAll()
         {
             var result = await db.DeleteAll(entityType.Value.Name);
             return result;
